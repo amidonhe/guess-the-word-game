@@ -26,7 +26,6 @@ guessButton.addEventListener("click", function (e) {
     message.innerText = "";
     const guessInput = letterInput.value;
     const validGuess = validateInput(guessInput);
-    //console.log(guessInput);
     if (validGuess) {
         makeGuess(guessInput);
     }
@@ -53,5 +52,40 @@ const makeGuess = function (guessInput) {
     } else {
         guessedLettersArray.push(guessInput);
         console.log(guessedLettersArray);
+        displayGuessedLetters();
+        displayWordProgress(guessedLettersArray);
+    }
+};
+
+const displayGuessedLetters = function () {
+    guessedLetters.innerHTML = "";
+    for (const letter of guessedLettersArray) {
+        const li = document.createElement("li");
+        li.innerText = letter;
+        guessedLetters.append(li);
+    }
+};
+
+const displayWordProgress = function (guessedLettersArray) {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+    //console.log(wordArray);
+    //note: while Vanna White is not a good variable name, but it is a funny one
+    const vannaWhite = [];
+    for (const letter of wordArray) {
+        if (guessedLettersArray.includes(letter)) {
+            vannaWhite.push(letter.toUpperCase());
+        } else {
+            vannaWhite.push("●");
+        }
+    }
+    wordProgress.innerText = vannaWhite.join("");
+    winCheck();
+};
+
+const winCheck = function () {
+    if (word.toUpperCase() === wordProgress.innerText) {
+      message.classList.add("win");
+      message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
     }
 };
